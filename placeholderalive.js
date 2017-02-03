@@ -67,10 +67,10 @@ var PlaceholderAliveFactory = (function(){
         var $this = this;
         // trying not to use let keyword, so using an iife
         for(var i = 0; i <= currentPlaceholder.length; i++){
-            (function(currentSize){
+            (function(currentPosition){
                 setTimeout(function(){
-                    $this.elem.setAttribute("placeholder", currentPlaceholder.splice(0, currentSize));
-                }, $this.wordInterval * currentSize);
+                    $this.elem.setAttribute("placeholder", currentPlaceholder.splice(0, currentPosition));
+                }, $this.wordInterval * currentPosition);
             })(i);
         }
     };
