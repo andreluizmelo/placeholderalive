@@ -29,9 +29,13 @@ var PlaceholderAliveFactory = (function(){
         }
     }
 
+    PlaceholderAlive.prototype.Undrawn = function(){
+
+    };
+
     PlaceholderAlive.prototype.Draw = function(){
 
-    }
+    };
 
     PlaceholderAlive.prototype.Start = function(){
         if(this.intervalFunctionId !== null){ // there is already a setInterval in place
