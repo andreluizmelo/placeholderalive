@@ -15,7 +15,7 @@ var PlaceholderAliveFactory = (function(){
         this.placeholderList = placeholderList;
         this.currentPlaceholder = 0;
         this.elem = getElementById(this.elementId);
-        this.intervalFunctionId = null;
+        this.intervalFunctionId = null; // stores the id received from setInterval
 
         this.options = defaultOptions; // set options to default ones initially
         if(options !== null && options !== undefined){
@@ -62,8 +62,8 @@ var PlaceholderAliveFactory = (function(){
             this.Stop();
         }
         if( placeholder instanceof Array){
-            this.placeholderList = this.placeholderList + placeholder;
-        }else{
+            this.placeholderList = this.placeholderList.concat(placeholder);
+        }else if(placeholder !== null && placeholder !== undefined){
             this.placeholderList.push(placeholder);
         }
         this.Start();
