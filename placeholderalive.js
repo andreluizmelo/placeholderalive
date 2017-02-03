@@ -41,7 +41,14 @@ var PlaceholderAliveFactory = (function(){
         return this.intervalFunctionId !== null;
     };
 
+    // sets this.currentPlaceholder to next positions
+    PlaceholderAlive.prototype.SetNext = function(){
+        // ads one and goes back to beggining if needed
+        $this.currentPlaceholder = ($this.currentPlaceholder + 1) % $this.placeholderList.length;
+    };
+
     // removes one letter at a time from the placeholder
+    // returns total time to undrawn word
     PlaceholderAlive.prototype.Undrawn = function(){
         // sets it in a variable so if it is changed outside this method is not affected
         var currentIndex = this.currentPlaceholder; 
@@ -56,9 +63,11 @@ var PlaceholderAliveFactory = (function(){
                 }, $this.wordInterval * currentPosition);
             })(i);
         }
+        return (currentPlaceholder.length + 1);
     };
 
     // puts one letter at a time in the placeholder
+    // returns total time to drawn word
     PlaceholderAlive.prototype.Draw = function(){
         // sets it in a variable so if it is changed outside this method is not affected
         var currentIndex = this.currentPlaceholder; 
@@ -73,13 +82,30 @@ var PlaceholderAliveFactory = (function(){
                 }, $this.wordInterval * currentPosition);
             })(i);
         }
+        return currentPlaceholder.length;
+    };
+
+    PlaceholderAlive.prototype.DrawNext = function(){
+        var waitingTime = 0;
+        // checks options if it should undrawn slowly or not
+        if(this.options.undrawn == true){
+            waitingTime = this.Undrawn();
+        }
+        var $this = this;
+        setTimeout(function(){
+            $this.SetNext(); // goes to next placeholder
+            $this.Draw(); // draws the new placeholder
+        },waitingTime);
     };
 
     PlaceholderAlive.prototype.Start = function(){
         if(this.IsRunning()){ // there is already a setInterval in place
             return; 
         }
+        // draws first
         this.Draw();
+        // set interval timer to change placeholder
+        setInterval(this.DrawNext, this.wordInterval);
     };
 
     PlaceholderAlive.prototype.Stop = function(){
