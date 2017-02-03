@@ -48,15 +48,25 @@ var PlaceholderAliveFactory = (function(){
 
     // puts one letter at a time in the placeholder
     PlaceholderAlive.prototype.Draw = function(){
-
+        // sets it in a variable so if it is changed outside this method is not affected
+        var currentIndex = this.currentPlaceholder; 
+        var arrayLength = this.currentPlaceholder.length; 
+        var $this = this;
+        // trying not to use let keyword
+        for(var i = 0; i < arrayLength; i++){
+            (function(currentSize){
+                setTimeout(function(){
+                    $this.elem.setAttribute("placeholder", $this.placeholderList[currentIndex].splice(0, currentSize));
+                }, $this.wordInterval * currentSize);
+            })(i);
+        }
     };
 
     PlaceholderAlive.prototype.Start = function(){
         if(this.IsRunning()){ // there is already a setInterval in place
             return; 
         }
-
-
+        this.Draw();
     };
 
     PlaceholderAlive.prototype.Stop = function(){
