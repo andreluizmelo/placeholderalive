@@ -141,5 +141,9 @@ var PlaceholderAliveFactory = (function(){
         this.Start();
     };
 
+    self.NewPlaceholderAlice = function(elementId, placeholderList, options){
+        return new PlaceholderAlive(elementId, placeholderList, options);
+    }
+
     return self;
 })();
