@@ -29,6 +29,10 @@ var PlaceholderAliveFactory = (function(){
         }
     }
 
+    PlaceholderAlive.prototype.IsRunning = function(){
+        return this.intervalFunctionId !== null;
+    };
+
     PlaceholderAlive.prototype.Undrawn = function(){
 
     };
@@ -38,13 +42,13 @@ var PlaceholderAliveFactory = (function(){
     };
 
     PlaceholderAlive.prototype.Start = function(){
-        if(this.intervalFunctionId !== null){ // there is already a setInterval in place
+        if(this.IsRunning()){ // there is already a setInterval in place
             return; 
         }
     };
 
     PlaceholderAlive.prototype.Stop = function(){
-        if(this.intervalFunctionId === null){ // already stopped
+        if(!this.IsRunning()){ // already stopped
             return; 
         }
         clearInterval(this.intervalFunctionId); // stops the setInterval function
@@ -53,7 +57,7 @@ var PlaceholderAliveFactory = (function(){
     };
 
     PlaceholderAlive.prototype.Reset = function(){
-        if(this.intervalFunctionId !== null){ // there is a setInterval in place that needs to be stopped
+        if(this.IsRunning()){ // there is a setInterval in place that needs to be stopped
             this.Stop();
         }
         // starts again or for the first time
@@ -62,7 +66,7 @@ var PlaceholderAliveFactory = (function(){
 
     // stops the changing of placeholders, add a new one and starts again
     PlaceholderAlive.prototype.AddPlaceholders = function( placeholder){
-        if(this.intervalFunctionId !== null){ // there is a setInterval in place that needs to be stopped
+        if(this.IsRunning()){ // there is a setInterval in place that needs to be stopped
             this.Stop();
         }
         if( placeholder instanceof Array){
