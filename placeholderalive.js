@@ -31,18 +31,22 @@ var PlaceholderAliveFactory = (function(){
         }
     }
 
+    // calculates time between one word is drawn and next one
     PlaceholderAlive.prototype.CalculateWordInterval = function(){
         this.wordInterval = Math.max(Math.max.apply(null, this.placeholderList), this.options.minimumWordInterval);
     };
 
+    // checks if there is a setInterval timer running
     PlaceholderAlive.prototype.IsRunning = function(){
         return this.intervalFunctionId !== null;
     };
 
+    // removes one letter at a time from the placeholder
     PlaceholderAlive.prototype.Undrawn = function(){
 
     };
 
+    // puts one letter at a time in the placeholder
     PlaceholderAlive.prototype.Draw = function(){
 
     };
