@@ -49,7 +49,7 @@ var PlaceholderAliveFactory = (function(){
 
     // removes one letter at a time from the placeholder
     // returns total time to undrawn word
-    PlaceholderAlive.prototype.Undrawn = function(){
+    PlaceholderAlive.prototype.Undraw = function(){
         // sets it in a variable so if it is changed outside this method is not affected
         var currentIndex = this.currentPlaceholder; 
         var currentPlaceholder = this.placeholderList[currentIndex];
@@ -89,7 +89,7 @@ var PlaceholderAliveFactory = (function(){
         var waitingTime = 0;
         // checks options if it should undrawn slowly or not
         if(this.options.undrawn == true){
-            waitingTime = this.Undrawn();
+            waitingTime = this.Undraw();
         }
         var $this = this;
         setTimeout(function(){
