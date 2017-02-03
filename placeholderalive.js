@@ -5,7 +5,7 @@ var PlaceholderAliveFactory = (function(){
     var defaultOptions = {
         letterInterval: 50, // 50 milliseconds between each letter appears
         minimumWordInterval: 3000, // minimum time that each word has before it gets undrawn
-        undrawn: true, // if set to true, the current placeholder loses one letter at a time before the next gets drawn        
+        undraw: true, // if set to true, the current placeholder loses one letter at a time before the next gets drawn        
         autoStart: true
     };
 
@@ -34,7 +34,7 @@ var PlaceholderAliveFactory = (function(){
     // calculates time between one word is drawn and next one
     PlaceholderAlive.prototype.CalculateWordInterval = function(){
         this.wordInterval = Math.max(
-            (this.options.undrawn ? 2 : 1) * Math.max.apply(null, this.placeholderList),
+            (this.options.undraw ? 2 : 1) * Math.max.apply(null, this.placeholderList),
             this.options.minimumWordInterval);
     };
 
@@ -90,7 +90,7 @@ var PlaceholderAliveFactory = (function(){
     PlaceholderAlive.prototype.DrawNext = function(){
         var waitingTime = 0;
         // checks options if it should undrawn slowly or not
-        if(this.options.undrawn == true){
+        if(this.options.undraw == true){
             waitingTime = this.Undraw();
         }
         var $this = this;
