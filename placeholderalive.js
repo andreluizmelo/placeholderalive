@@ -24,10 +24,16 @@ var PlaceholderAliveFactory = (function(){
             }
         }
 
+        this.CalculateWordInterval();
+
         if(this.options.autoStart){
             this.Start();
         }
     }
+
+    PlaceholderAlive.prototype.CalculateWordInterval = function(){
+        this.wordInterval = Math.max(Math.max.apply(null, this.placeholderList), this.options.minimumWordInterval);
+    };
 
     PlaceholderAlive.prototype.IsRunning = function(){
         return this.intervalFunctionId !== null;
@@ -45,6 +51,8 @@ var PlaceholderAliveFactory = (function(){
         if(this.IsRunning()){ // there is already a setInterval in place
             return; 
         }
+
+
     };
 
     PlaceholderAlive.prototype.Stop = function(){
@@ -74,6 +82,7 @@ var PlaceholderAliveFactory = (function(){
         }else if(placeholder !== null && placeholder !== undefined){
             this.placeholderList.push(placeholder);
         }
+        this.CalculateWordInterval();
         this.Start();
     };
 
