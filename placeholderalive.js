@@ -43,20 +43,33 @@ var PlaceholderAliveFactory = (function(){
 
     // removes one letter at a time from the placeholder
     PlaceholderAlive.prototype.Undrawn = function(){
+        // sets it in a variable so if it is changed outside this method is not affected
+        var currentIndex = this.currentPlaceholder; 
+        var currentPlaceholder = this.placeholderList[currentIndex];
 
+        var $this = this;
+        // trying not to use let keyword, so using an iife
+        for(var i = 0; i <= currentPlaceholder.length; i++){
+            (function(currentPosition){
+                setTimeout(function(){
+                    $this.elem.setAttribute("placeholder", currentPlaceholder.splice(0, currentPlaceholder.length - currentPosition));
+                }, $this.wordInterval * currentPosition);
+            })(i);
+        }
     };
 
     // puts one letter at a time in the placeholder
     PlaceholderAlive.prototype.Draw = function(){
         // sets it in a variable so if it is changed outside this method is not affected
         var currentIndex = this.currentPlaceholder; 
-        var arrayLength = this.currentPlaceholder.length; 
+        var currentPlaceholder = this.placeholderList[currentIndex];
+        
         var $this = this;
-        // trying not to use let keyword
-        for(var i = 0; i < arrayLength; i++){
+        // trying not to use let keyword, so using an iife
+        for(var i = 0; i <= currentPlaceholder.length; i++){
             (function(currentSize){
                 setTimeout(function(){
-                    $this.elem.setAttribute("placeholder", $this.placeholderList[currentIndex].splice(0, currentSize));
+                    $this.elem.setAttribute("placeholder", currentPlaceholder.splice(0, currentSize));
                 }, $this.wordInterval * currentSize);
             })(i);
         }
