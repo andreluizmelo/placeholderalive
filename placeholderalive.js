@@ -33,7 +33,9 @@ var PlaceholderAliveFactory = (function(){
 
     // calculates time between one word is drawn and next one
     PlaceholderAlive.prototype.CalculateWordInterval = function(){
-        this.wordInterval = Math.max(Math.max.apply(null, this.placeholderList), this.options.minimumWordInterval);
+        this.wordInterval = Math.max(
+            (this.options.undrawn ? 2 : 1) * Math.max.apply(null, this.placeholderList),
+            this.options.minimumWordInterval);
     };
 
     // checks if there is a setInterval timer running
