@@ -4,7 +4,7 @@ var PlaceholderAliveFactory = (function(){
     // default options for the PlaceholderAlive object
     var defaultOptions = {
         letterInterval: 50, // 50 milliseconds between each letter appears
-        minimumWordInterval: 3000, // minimum time that each word has before it gets undrawn
+        minimumWordInterval: 2500, // minimum time that each word has before it gets undrawn
         undraw: true, // if set to true, the current placeholder loses one letter at a time before the next gets drawn        
         autoStart: true
     };
@@ -14,7 +14,7 @@ var PlaceholderAliveFactory = (function(){
         this.elementId = inputId;
         this.placeholderList = placeholderList;
         this.currentPlaceholder = 0;
-        this.elem = getElementById(this.elementId);
+        this.elem =document.getElementById(this.elementId);
         this.intervalFunctionId = null; // stores the id received from setInterval
 
         this.options = defaultOptions; // set options to default ones initially
@@ -26,6 +26,7 @@ var PlaceholderAliveFactory = (function(){
 
         this.CalculateWordInterval();
 
+        console.log(this);
         if(this.options.autoStart){
             this.Start();
         }
@@ -34,7 +35,7 @@ var PlaceholderAliveFactory = (function(){
     // calculates time between one word is drawn and next one
     PlaceholderAlive.prototype.CalculateWordInterval = function(){
         this.wordInterval = Math.max(
-            (this.options.undraw ? 2 : 1) * Math.max.apply(null, this.placeholderList),
+            (this.options.undraw ? 2 : 1) * Math.max.apply(null, this.placeholderList.map(function(elem){ return elem.length;})),
             this.options.minimumWordInterval);
     };
 
@@ -46,7 +47,7 @@ var PlaceholderAliveFactory = (function(){
     // sets this.currentPlaceholder to next positions
     PlaceholderAlive.prototype.SetNext = function(){
         // ads one and goes back to beggining if needed
-        $this.currentPlaceholder = ($this.currentPlaceholder + 1) % $this.placeholderList.length;
+        this.currentPlaceholder = (this.currentPlaceholder + 1) % this.placeholderList.length;
     };
 
     // removes one letter at a time from the placeholder
@@ -61,11 +62,11 @@ var PlaceholderAliveFactory = (function(){
         for(var i = 0; i <= currentPlaceholder.length; i++){
             (function(currentPosition){
                 setTimeout(function(){
-                    $this.elem.setAttribute("placeholder", currentPlaceholder.splice(0, currentPlaceholder.length - currentPosition));
-                }, $this.wordInterval * currentPosition);
+                    $this.elem.setAttribute("placeholder", currentPlaceholder.slice(0, currentPlaceholder.length - currentPosition));
+                }, $this.options.letterInterval * currentPosition);
             })(i);
         }
-        return (currentPlaceholder.length + 1);
+        return (currentPlaceholder.length + 1) * this.options.letterInterval;
     };
 
     // puts one letter at a time in the placeholder
@@ -80,11 +81,11 @@ var PlaceholderAliveFactory = (function(){
         for(var i = 0; i <= currentPlaceholder.length; i++){
             (function(currentPosition){
                 setTimeout(function(){
-                    $this.elem.setAttribute("placeholder", currentPlaceholder.splice(0, currentPosition));
-                }, $this.wordInterval * currentPosition);
+                    $this.elem.setAttribute("placeholder", currentPlaceholder.slice(0, currentPosition));
+                }, $this.options.letterInterval * currentPosition);
             })(i);
         }
-        return currentPlaceholder.length;
+        return (currentPlaceholder.length + 1) * this.options.letterInterval;
     };
 
     PlaceholderAlive.prototype.DrawNext = function(){
@@ -107,7 +108,10 @@ var PlaceholderAliveFactory = (function(){
         // draws first
         this.Draw();
         // set interval timer to change placeholder
-        setInterval(this.DrawNext, this.wordInterval);
+        var $this = this;
+        setInterval(function(){
+            $this.DrawNext();
+        }, $this.wordInterval);
     };
 
     PlaceholderAlive.prototype.Stop = function(){
@@ -116,7 +120,6 @@ var PlaceholderAliveFactory = (function(){
         }
         clearInterval(this.intervalFunctionId); // stops the setInterval function
         this.currentPlaceholder = 0; // sets it back to the first placeholder
-        this.Draw();
     };
 
     PlaceholderAlive.prototype.Reset = function(){
@@ -141,7 +144,7 @@ var PlaceholderAliveFactory = (function(){
         this.Start();
     };
 
-    self.NewPlaceholderAlice = function(elementId, placeholderList, options){
+    self.NewPlaceholderAlive = function(elementId, placeholderList, options){
         return new PlaceholderAlive(elementId, placeholderList, options);
     }
 
