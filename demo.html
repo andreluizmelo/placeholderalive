@@ -3,16 +3,11 @@
     <head>
         <title>Placeholder Alive Demo</title>
         <meta charset="utf-8">
-        <script src="./placeholderalive.js" type="application/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="./demo-content/css/demo.css">
     </head>
     <body>
         <input type="text" id="demo-input">
-        <script type="application/javascript">
-            var alive = PlaceholderAliveFactory.NewPlaceholderAlive("demo-input",
-            ["This","Placeholder", "Is", "Alive"], {
-                letterInterval: 65,
-                minimumWordInterval: 2000
-            });
-        </script>
+        <script src="./placeholderalive.js" type="application/javascript"></script>
+        <script type="application/javascript" src="./demo-content/js/demo.js"></script>
     </body>
 </html>
